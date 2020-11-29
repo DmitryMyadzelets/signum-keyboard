@@ -5,7 +5,7 @@ The keyboard uses [Teency USB development board](https://www.pjrc.com/teensy/).
 
 ## Development Setup
 1. Install [Arduino IDE](//www.arduino.cc)
-2. Install [Teensyduino IDE](https://www.pjrc.com/teensy/teensyduino.html)
+2. Install [Teensyduino add-on for Arduino](https://www.pjrc.com/teensy/teensyduino.html)
 
 Note: On Rock64 I used packages build for `arrch64` architecture.
 
