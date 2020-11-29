@@ -1,4 +1,4 @@
-![How the keyboard looks](img/keyboard.jpg)
+![How the keyboard looks](img/keyboard-right.jpg)
 
 # Signum keyboard
 My ergonomic keyboard based on [Troy's Flatcher](http://troyfletcher.net) board.
