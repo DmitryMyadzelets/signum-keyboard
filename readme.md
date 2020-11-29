@@ -18,7 +18,7 @@ Note: On Rock64 I used packages build for `arrch64` architecture.
 * [Debouncing](https://www.embedded.com/electronics-blogs/break-points/4024981/My-favorite-software-debouncers)
 * [Debounce in C](https://github.com/tcleg/Button_Debouncer)
 
-## Pins the Signum 3 uses in Teensy versions 2 and 3.2
+## Teensy's pins used to scan the keys
 ```
 Teensy    2.0   3.2
 
