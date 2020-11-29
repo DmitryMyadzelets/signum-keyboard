@@ -1,5 +1,5 @@
 # Signum keyboard
-My ergonomic keyboard based on [Troy's Flatcher](//troyfletcher.net) board.
+My ergonomic keyboard based on [Troy's Flatcher](http://troyfletcher.net) board.
 
 ## Development Setup
 1. Install [Arduino IDE](//www.arduino.cc)
