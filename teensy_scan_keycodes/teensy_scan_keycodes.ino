@@ -6,7 +6,7 @@
 // The Teensy 3.2 is based on 32 bit ARM Cortex-M4,
 // so we use 32 bit variables by default.
 
-// Signum 3.0 configuration
+// Signum 3.0 board configuration asdfa
 #define COLS 12
 #define ROWS 4
 #define KEYS (COLS * ROWS)
@@ -34,6 +34,12 @@ const unsigned layout[KEYS] = {
 };
 
 //-----------------------------------------------------------------------------
+// The setup function is invoked before the loop function
+void setup() {
+  for (int c = 0; c < COLS; c++) { pinMode(colPins[c], INPUT_PULLUP); }
+  for (int r = 0; r < ROWS; r++) { pinMode(rowPins[r], INPUT_PULLUP); }
+}
+
 // Set bit value in the array
 void set(uint32_t *arr, int bit, int v) {
   static int ix;
@@ -82,15 +88,10 @@ void debounce() {
   }
 }
 
-void setup() {
-  for (int c = 0; c < COLS; c++) { pinMode(colPins[c], INPUT_PULLUP); }
-  for (int r = 0; r < ROWS; r++) { pinMode(rowPins[r], INPUT_PULLUP); }
-}
-
 void loop() {
   static unsigned i, t0, t;
 
-  // Do the stuff at least every next millisecond
+  // Do the stuff every next millisecond at most 
   t = millis();
   if (t == t0) { return; }
   t0 = t;
