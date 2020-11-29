@@ -1,6 +1,8 @@
 # Signum keyboard
 My ergonomic keyboard based on [Troy's Flatcher](http://troyfletcher.net) board.
 
+The keyboard uses [Teency USB development board](https://www.pjrc.com/teensy/).
+
 ## Development Setup
 1. Install [Arduino IDE](//www.arduino.cc)
 2. Install [Teensyduino IDE](//www.pjrc.com/teensy/)
@@ -8,7 +10,6 @@ My ergonomic keyboard based on [Troy's Flatcher](http://troyfletcher.net) board.
 Note: On Rock64 I used packages build for `arrch64` architecture.
 
 ## Resources
-* Pinouts for all Teensy family
 * [Signum 3 configuration](http://troyfletcher.net/config.html)
 * [USB HID keyboard codes, see page 53](https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf)
 * [QMK Keycodes](https://docs.qmk.fm/#/keycodes)
