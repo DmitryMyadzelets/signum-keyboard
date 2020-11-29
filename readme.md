@@ -1,6 +1,9 @@
-# How to Start
-1. Install Arduino IDE (I used aarch64 on Rock64)
-2. Install Teensyduino IDE (I used aarch64 on Rock64)
+# Signum keyboard
+My ergonomic keyboard based on [Troy's Flatcher](troyfletcher.net) board.
+
+## Development Setup
+1. Install [Arduino IDE](www.arduino.cc) (I used aarch64 on Rock64)
+2. Install [Teensyduino IDE](www.pjrc.com/teensy/) (I used aarch64 on Rock64)
 
 ## Resources
 * Pinouts for all Teensy family
@@ -17,6 +20,7 @@
 
 (I have Teensy 3.2)
 
+```
 Teensy    2.0   3.2
 
 col 0     C6    11
@@ -36,11 +40,13 @@ row 0     B0    2
 row 1     B3    5
 row 2     F6    19
 row 3     C7    12
+```
 
 ## Indexes of the keys
-
+```
  0  1  2  3  4  5    6  7  8  9 10 11
 12 13 14 15 16 17   18 19 20 21 22 23
 24 25 26 27 28 29   30 31 32 33 34 35
 36 37 38 39 40 41   42 43 44 45 46 47
+```
 
