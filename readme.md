@@ -1,9 +1,9 @@
 # Signum keyboard
-My ergonomic keyboard based on [Troy's Flatcher](troyfletcher.net) board.
+My ergonomic keyboard based on [Troy's Flatcher](://troyfletcher.net) board.
 
 ## Development Setup
-1. Install [Arduino IDE](www.arduino.cc) (I used aarch64 on Rock64)
-2. Install [Teensyduino IDE](www.pjrc.com/teensy/) (I used aarch64 on Rock64)
+1. Install [Arduino IDE](://www.arduino.cc) (I used aarch64 on Rock64)
+2. Install [Teensyduino IDE](://www.pjrc.com/teensy/) (I used aarch64 on Rock64)
 
 ## Resources
 * Pinouts for all Teensy family
