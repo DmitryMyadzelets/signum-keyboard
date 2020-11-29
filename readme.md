@@ -5,6 +5,8 @@ My ergonomic keyboard based on [Troy's Flatcher](http://troyfletcher.net) board.
 
 The keyboard uses [Teency USB development board](https://www.pjrc.com/teensy/).
 
+The layouts of my keyboard are at [keyboard-layout-editor.com](http://www.keyboard-layout-editor.com/#/gists/1db4e9d50eaa5da4385a4fb53a21c67d).
+
 ## Development Setup
 1. Install [Arduino IDE](//www.arduino.cc)
 2. Install [Teensyduino add-on](https://www.pjrc.com/teensy/teensyduino.html) for Arduino IDE
