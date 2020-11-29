@@ -2,8 +2,10 @@
 My ergonomic keyboard based on [Troy's Flatcher](//troyfletcher.net) board.
 
 ## Development Setup
-1. Install [Arduino IDE](//www.arduino.cc) (I used aarch64 on Rock64)
-2. Install [Teensyduino IDE](//www.pjrc.com/teensy/) (I used aarch64 on Rock64)
+1. Install [Arduino IDE](//www.arduino.cc)
+2. Install [Teensyduino IDE](//www.pjrc.com/teensy/)
+
+Note: On Rock64 I used packages build for `arrch64` architecture.
 
 ## Resources
 * Pinouts for all Teensy family
@@ -17,9 +19,6 @@ My ergonomic keyboard based on [Troy's Flatcher](//troyfletcher.net) board.
 * [Debounce in C](https://github.com/tcleg/Button_Debouncer)
 
 ## Pins the Signum 3 uses in Teensy versions 2 and 3.2
-
-(I have Teensy 3.2)
-
 ```
 Teensy    2.0   3.2
 
@@ -41,6 +40,7 @@ row 1     B3    5
 row 2     F6    19
 row 3     C7    12
 ```
+Note: I use Teency 3.2
 
 ## Indexes of the keys
 ```
