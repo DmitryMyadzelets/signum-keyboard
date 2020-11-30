@@ -11,7 +11,7 @@ The layouts of my keyboard are at [keyboard-layout-editor.com](http://www.keyboa
 1. Install [Arduino IDE](//www.arduino.cc)
 2. Install [Teensyduino add-on](https://www.pjrc.com/teensy/teensyduino.html) for Arduino IDE
 
-Note: On Rock64 I used packages build for `arrch64` architecture.
+Note: On Rock64 I used packages built for `arrch64` architecture.
 
 ## Resources
 * [Signum 3 configuration](http://troyfletcher.net/config.html)
