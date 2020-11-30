@@ -22,6 +22,7 @@ Note: On Rock64 I used packages build for `arrch64` architecture.
 * [Teensy 3.1 bare metal: Writing a USB driver](http://kevincuzner.com/2014/12/12/teensy-3-1-bare-metal-writing-a-usb-driver/)
 * [Debouncing](https://www.embedded.com/electronics-blogs/break-points/4024981/My-favorite-software-debouncers)
 * [Debounce in C](https://github.com/tcleg/Button_Debouncer)
+* [My collection of 40% layouts](https://gist.github.com/DmitryMyadzelets/c22403c905512ba3f0da4bed3c205506)
 
 ## Teensy's pins used to scan the keys
 ```
