@@ -68,6 +68,8 @@ Modifiers: `Ctrl, Shift, Alt, Win`
 
 Press-only keys: `Esc, Tab, Enter, Caps`
 
+The keys with symbols on the ergonomic keyboard:
+
 ```
 ` Q W E R T  Y U I O P [
   A S D F G  H J K L ; '
