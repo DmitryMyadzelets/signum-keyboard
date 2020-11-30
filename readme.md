@@ -22,7 +22,7 @@ Note: On Rock64 I used packages build for `arrch64` architecture.
 * [Teensy 3.1 bare metal: Writing a USB driver](http://kevincuzner.com/2014/12/12/teensy-3-1-bare-metal-writing-a-usb-driver/)
 * [Debouncing](https://www.embedded.com/electronics-blogs/break-points/4024981/My-favorite-software-debouncers)
 * [Debounce in C](https://github.com/tcleg/Button_Debouncer)
-* [My collection of 40% layouts](https://gist.github.com/DmitryMyadzelets/c22403c905512ba3f0da4bed3c205506)
+* [My collection of layouts](https://gist.github.com/DmitryMyadzelets/c22403c905512ba3f0da4bed3c205506)
 
 ## Teensy's pins used to scan the keys
 ```
@@ -54,5 +54,13 @@ Note: I use Teency 3.2
 12 13 14 15 16 17   18 19 20 21 22 23
 24 25 26 27 28 29   30 31 32 33 34 35
 36 37 38 39 40 41   42 43 44 45 46 47
+```
+## Layouts
+The 47 keys with symbols of my full keyboard:
+```
+` 1 2 3 4 5  6 7 8 9 0 - =
+  Q W E R T  Y U I O P [ ]
+  A S D F G  H J K L ; ' \
+  Z X C V B  N M , . /
 ```
 
