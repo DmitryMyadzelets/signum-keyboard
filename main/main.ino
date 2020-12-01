@@ -48,8 +48,8 @@ void setup() {
 }
 
 // Set bit value in the array
-void set(uint32_t *arr, int bit, int v) {
-  static int ix;
+void set(uint32_t *arr, unsigned bit, int v) {
+  static unsigned ix;
   ix = bit >> 5;
   bit -= ix * 32;
   if (v) {
@@ -60,8 +60,8 @@ void set(uint32_t *arr, int bit, int v) {
 }
 
 // Set bit value in the array
-int get(uint32_t *arr, int bit) {
-  static int ix;
+unsigned get(uint32_t *arr, unsigned bit) {
+  static unsigned ix;
   ix = bit >> 5;
   bit -= ix * 32;
   return arr[ix] >> bit & 1u;
@@ -96,7 +96,7 @@ void debounce() {
 }
 
 void loop() {
-  static unsigned i, t0, t;
+  static unsigned i, t0, t, code, down;
 
   // Do the stuff every next millisecond at most 
   t = millis();
@@ -114,7 +114,24 @@ void loop() {
   // Send new keyboard events to the USB host
   for (i = 0; i < KEYS; i++) {
     if (get(keys_new, i)) {
-      get(keys_now, i) ? Keyboard.press(layout[i]) : Keyboard.release(layout[i]);
+      code = layout[i];
+      down = get(keys_now, i);
+
+      switch (code) {
+        // Example of the hold-key behaviour
+        case KEY_SPACE:
+        {
+          if (!down) {
+            Keyboard.press(code);
+            Keyboard.release(code);
+          }
+          break;
+        }
+        default:
+        {
+          down ? Keyboard.press(code) : Keyboard.release(code);
+        }
+      }
     }
   }
 }
