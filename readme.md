@@ -57,28 +57,35 @@ Note: I use Teency 3.2
 ```
 
 ## Layouts
-The 47 keys with symbols of my full keyboard:
+### My full keyboard
+The 47 keys with symbols
 ```
 ` 1 2 3 4 5  6 7 8 9 0 - =
   Q W E R T  Y U I O P [ ]
   A S D F G  H J K L ; ' \
   Z X C V B  N M , . /
 ```
-Cyrillic symbols on the full keyboard:
 ```
 Ё 1 2 3 4 5   6 7 8 9 0 - =
   Й Ц У К Е   Н Г Ш Щ З Х Ъ 
   Ф Ы В А П   Р О Л Д Ж Э \
   Я Ч С М И   Т Ь Б Ю .
 ```
-The keys with symbols on the ergonomic keyboard:
+### My ergonomic keyboard
 ```
 ` Q W E R T  Y U I O P [
   A S D F G  H J K L ; '
   Z X C V B  N M , . / ]
                        \ 
 ```
-The Atreus keboard, main layout:
+```
+Ё Й Ц У К Е  Н Г Ш Щ З Х
+  Ф Ы В А П  Р О Л Д Ж Э
+  Я Ч С М И  Т Ь Б Ю . Ъ
+                       \ 
+```
+### Other keyboards
+Atreus keboard, main layout:
 ```
 Q W E R T      Y U I O P
 A S D F G      H J K L ;
