@@ -64,7 +64,7 @@ The 47 keys with symbols of my full keyboard:
   A S D F G  H J K L ; ' \
   Z X C V B  N M , . /
 ```
-Cyriliic symbols on the full keyboard:
+Cyrillic symbols on the full keyboard:
 ```
 Ё 1 2 3 4 5   6 7 8 9 0 - =
   Й Ц У К Е   Н Г Ш Щ З Х Ъ 
