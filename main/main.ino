@@ -36,7 +36,7 @@ const unsigned layout[KEYS] = {
   MODIFIERKEY_SHIFT, KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, 
   KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE/*MODIFIERKEY_RIGHT_SHIFT*/,
 //
-  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, 4, MODIFIERKEY_SHIFT, KEY_ESC, 
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, 4, KEY_BACKSPACE, KEY_ESC, 
   KEY_ENTER, KEY_SPACE, KEY_BACKSPACE, 10, KEY_BACKSLASH/*MODIFIERKEY_GUI*/, MODIFIERKEY_RIGHT_CTRL
 };
 
@@ -126,8 +126,8 @@ void loop() {
             Keyboard.release(code);
           }
           break;
-*/        }
-        default:
+        }
+*/        default:
         {
           down ? Keyboard.press(code) : Keyboard.release(code);
         }
