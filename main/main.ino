@@ -119,14 +119,14 @@ void loop() {
 
       switch (code) {
         // Example of the hold-key behaviour
-        case KEY_SPACE:
+/*        case KEY_SPACE:
         {
           if (!down) {
             Keyboard.press(code);
             Keyboard.release(code);
           }
           break;
-        }
+*/        }
         default:
         {
           down ? Keyboard.press(code) : Keyboard.release(code);
