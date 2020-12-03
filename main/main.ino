@@ -27,7 +27,7 @@ uint8_t keys_states[KEYS]; // Keys' states history for debouncing
 //-----------------------------------------------------------------------------
 // Layouts
 #define KEY_LEVEL_1 256u
-/*MODIFIERKEY_RIGHT_SHIFT*/
+
 const unsigned layout_0[KEYS] = {
   KEY_TILDE, KEY_Q, KEY_W, KEY_E, KEY_R, KEY_T, 
   KEY_Y, KEY_U, KEY_I, KEY_O, KEY_P, KEY_LEFT_BRACE,
@@ -36,20 +36,21 @@ const unsigned layout_0[KEYS] = {
   KEY_H, KEY_J, KEY_K, KEY_L, KEY_SEMICOLON, KEY_QUOTE,
   //
   MODIFIERKEY_SHIFT, KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, 
-  KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE,
+  KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE/*MODIFIERKEY_RIGHT_SHIFT*/,
   //
   MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_1, KEY_BACKSPACE, KEY_ESC, 
   KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
 };
+
 const unsigned layout_1[KEYS] = {
   KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6,
   KEY_7, KEY_8, KEY_9, KEY_0, KEY_MINUS, KEY_EQUAL,
   //
   0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0,
+  KEY_LEFT, KEY_DOWN, KEY_UP, KEY_RIGHT, 0, 0,
   //
   MODIFIERKEY_SHIFT, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, KEY_RIGHT_BRACE,
   //
   MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_1, KEY_BACKSPACE, KEY_ESC, 
   KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
@@ -62,7 +63,7 @@ void setup() {
   for (int r = 0; r < ROWS; r++) { pinMode(rowPins[r], INPUT_PULLUP); }
 }
 
-// Set bit value in the array
+// Set the bit value in an array
 void set_bit(uint32_t *arr, unsigned bit, int v) {
   static unsigned ix;
   ix = bit >> 5;
@@ -74,7 +75,7 @@ void set_bit(uint32_t *arr, unsigned bit, int v) {
   }
 }
 
-// Set bit value in the array
+// Get a bit value in the array
 unsigned get_bit(uint32_t *arr, unsigned bit) {
   static unsigned ix;
   ix = bit >> 5;
@@ -113,6 +114,7 @@ void debounce() {
 void loop() {
   static unsigned i, t0, t, code, down;
   static const unsigned *layout = layout_0;
+  static unsigned keys_hold = 0;
 
   // Do the stuff every next millisecond at most 
   t = millis();
@@ -124,7 +126,7 @@ void loop() {
   
   for (i = 0; i < keys_uint32; i++) {
     keys_new[i] = keys_old[i] ^ keys_now[i]; // keys just pressed or released
-    keys_old[i] = keys_now[i]; // save to old
+    keys_old[i] = keys_now[i]; // update the olds
   }
 
   // Send new keyboard events to the USB host
@@ -134,6 +136,23 @@ void loop() {
       down = get_bit(keys_now, i);
 
       switch (code) {
+        case KEY_RIGHT_BRACE: {
+          switch (keys_hold) {
+            case 0:
+              keys_hold = 1;
+              break;
+            case 1:
+              keys_hold = 0;
+              Keyboard.press(code);
+              Keyboard.release(code);
+              break;
+            case 2:
+              keys_hold = 0;
+              Keyboard.release(KEY_RIGHT_SHIFT);
+              break;
+          }
+          break;
+        }
         // Example of the hold-key behaviour
 /*        case KEY_SPACE:
         {
@@ -149,6 +168,10 @@ void loop() {
         }
         default:
         {
+          if (1 == keys_hold) {
+            keys_hold = 2;
+            Keyboard.press(KEY_RIGHT_SHIFT);
+          }
           down ? Keyboard.press(code) : Keyboard.release(code);
         }
       }
