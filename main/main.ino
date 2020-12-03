@@ -26,18 +26,33 @@ uint8_t keys_states[KEYS]; // Keys' states history for debouncing
 
 //-----------------------------------------------------------------------------
 // Layouts
-const unsigned layout[KEYS] = {
+#define KEY_LEVEL_1 256u
+/*MODIFIERKEY_RIGHT_SHIFT*/
+const unsigned layout_0[KEYS] = {
   KEY_TILDE, KEY_Q, KEY_W, KEY_E, KEY_R, KEY_T, 
   KEY_Y, KEY_U, KEY_I, KEY_O, KEY_P, KEY_LEFT_BRACE,
-//
+  //
   KEY_TAB, KEY_A, KEY_S, KEY_D, KEY_F, KEY_G, 
   KEY_H, KEY_J, KEY_K, KEY_L, KEY_SEMICOLON, KEY_QUOTE,
-//
+  //
   MODIFIERKEY_SHIFT, KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, 
-  KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE/*MODIFIERKEY_RIGHT_SHIFT*/,
-//
-  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, 4, KEY_BACKSPACE, KEY_ESC, 
-  KEY_ENTER, KEY_SPACE, KEY_BACKSPACE, 10, KEY_BACKSLASH/*MODIFIERKEY_GUI*/, MODIFIERKEY_RIGHT_CTRL
+  KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE,
+  //
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_1, KEY_BACKSPACE, KEY_ESC, 
+  KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
+};
+const unsigned layout_1[KEYS] = {
+  KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6,
+  KEY_7, KEY_8, KEY_9, KEY_0, KEY_MINUS, KEY_EQUAL,
+  //
+  0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0,
+  //
+  MODIFIERKEY_SHIFT, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0,
+  //
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_1, KEY_BACKSPACE, KEY_ESC, 
+  KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
 };
 
 //-----------------------------------------------------------------------------
@@ -48,7 +63,7 @@ void setup() {
 }
 
 // Set bit value in the array
-void set(uint32_t *arr, unsigned bit, int v) {
+void set_bit(uint32_t *arr, unsigned bit, int v) {
   static unsigned ix;
   ix = bit >> 5;
   bit -= ix * 32;
@@ -60,7 +75,7 @@ void set(uint32_t *arr, unsigned bit, int v) {
 }
 
 // Set bit value in the array
-unsigned get(uint32_t *arr, unsigned bit) {
+unsigned get_bit(uint32_t *arr, unsigned bit) {
   static unsigned ix;
   ix = bit >> 5;
   bit -= ix * 32;
@@ -78,7 +93,7 @@ void scan() {
     for (c = 0; c < COLS; c++) {
       v = digitalRead(colPins[c]);
       ix = r * COLS + c;
-      set(keys_now, ix, !v);
+      set_bit(keys_now, ix, !v);
     }
     
     pinMode(rowPins[r], INPUT_PULLUP);
@@ -90,13 +105,14 @@ void debounce() {
   static unsigned i;
 
   for (i = 0; i < KEYS; i++) {
-      (keys_states[i] <<= 1) |= get(keys_now, i);
-      set(keys_now, i, keys_states[i]);
+      (keys_states[i] <<= 1) |= get_bit(keys_now, i);
+      set_bit(keys_now, i, keys_states[i]);
   }
 }
 
 void loop() {
   static unsigned i, t0, t, code, down;
+  static const unsigned *layout = layout_0;
 
   // Do the stuff every next millisecond at most 
   t = millis();
@@ -113,9 +129,9 @@ void loop() {
 
   // Send new keyboard events to the USB host
   for (i = 0; i < KEYS; i++) {
-    if (get(keys_new, i)) {
+    if (get_bit(keys_new, i)) {
       code = layout[i];
-      down = get(keys_now, i);
+      down = get_bit(keys_now, i);
 
       switch (code) {
         // Example of the hold-key behaviour
@@ -126,8 +142,12 @@ void loop() {
             Keyboard.release(code);
           }
           break;
+        } */
+        case KEY_LEVEL_1: {
+          layout = down ? layout_1 : layout_0;
+          break;
         }
-*/        default:
+        default:
         {
           down ? Keyboard.press(code) : Keyboard.release(code);
         }
