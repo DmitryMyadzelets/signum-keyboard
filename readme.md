@@ -103,5 +103,5 @@ Printable symbols can't be delayed. Normally symbols appear when the keys go dow
 The most used non-symbol keys are Space and Backspace, according to
 [this](https://www.businessinsider.com/these-are-the-three-most-popular-keys-on-a-keyboard-2013-7?IR=T)
 and [this](https://daniel.haxx.se/blog/2014/11/12/keyboard-key-frequency/)
-articles.
+articles. These keys should be at default positions for thumbs. Another frequently used key is Shift. When it's pressed, the thumbs should remain at their default position.
 
