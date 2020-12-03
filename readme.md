@@ -1,7 +1,7 @@
 ![How the keyboard looks](img/keyboard-right.jpg)
 
 # Signum keyboard
-My ergonomic keyboard based on [Troy's Fletcher](http://troyfletcher.net) board.
+My ergonomic keyboard based on [Troy Fletcher's](http://troyfletcher.net) board.
 
 The keyboard uses [Teency USB development board](https://www.pjrc.com/teensy/).
 
