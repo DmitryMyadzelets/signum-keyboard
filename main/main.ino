@@ -6,7 +6,7 @@
 // The Teensy 3.2 is based on 32 bit ARM Cortex-M4,
 // so we use 32 bit variables by default.
 
-// Signum 3.0 board configuration asdfa
+// Signum 3.0 board configuration
 #define COLS 12
 #define ROWS 4
 #define KEYS (COLS * ROWS)
