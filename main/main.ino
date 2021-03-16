@@ -85,7 +85,7 @@ unsigned get_bit(uint32_t *arr, unsigned bit) {
 
 // Scan all keys
 void scan() {
-  static int r, c, v, ix;
+  static unsigned r, c, v, ix;
 
   for (r = 0; r < ROWS; r++) {
     pinMode(rowPins[r], OUTPUT);
