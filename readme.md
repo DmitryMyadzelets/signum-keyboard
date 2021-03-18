@@ -98,7 +98,7 @@ Modifiers: `Ctrl, Shift, Alt, Win`
 Press-only keys: `Esc, Tab, Enter, Caps`
 
 ## Observations
-Printable symbols can't be delayed. Normally symbols appear when the keys go down. Some reduced keyboards make some symbols (e.g space) appear when a key goes up. When you type fast you can press keys in correct order, but release them in another order. E.g. when you type `a&#9251;b` you may get `ab&#9251;` if the space symbol is delayed. However, some non-printable symbols, like Enter and Tab may have no such effect.
+Printable symbols can't be delayed. Normally symbols appear when the keys go down. Some reduced keyboards make some symbols (e.g space) appear when a key goes up. When you type fast you can press keys in correct order, but release them in another order. E.g. when you type `a b` you may get `ab ` if the space symbol is delayed. However, some non-printable symbols, like Enter and Tab may have no such effect.
 
 The most used non-symbol keys are Space and Backspace, according to
 [this](https://www.businessinsider.com/these-are-the-three-most-popular-keys-on-a-keyboard-2013-7?IR=T)
