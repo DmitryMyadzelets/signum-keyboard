@@ -10,6 +10,7 @@ The layouts of my keyboard are at [keyboard-layout-editor.com](http://www.keyboa
 ## Development Setup
 1. Install [Arduino IDE](//www.arduino.cc)
 2. Install [Teensyduino add-on](https://www.pjrc.com/teensy/teensyduino.html) for Arduino IDE
+3. Select in the Arduino IDE "Tools > USB Type : Keyboard"
 
 Note: On Rock64 I used packages built for `arrch64` architecture.
 
