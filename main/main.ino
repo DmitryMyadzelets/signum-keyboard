@@ -113,13 +113,12 @@ void debounce(uint32_t *debounced) {
 
 // On key event
 // Send new keyboard events to the USB host
-void on_key(unsigned ix) {
-  static unsigned code, down;
+void on_key(unsigned bit, unsigned down) {
+  static unsigned code;
   static const unsigned *layout = layout_0;
   static unsigned shift_state = 0; 
 
-  code = layout[ix];
-  down = get_bit(keys_now, ix);
+  code = layout[bit];
 
   switch (code) {
     case KEY_LEVEL_1: {
@@ -154,7 +153,7 @@ void on_key(unsigned ix) {
 }
 
 void loop() {
-  static unsigned i, j, t0, t;
+  static unsigned i, j, t0, t, bit, down;
   static uint32_t tmp;
 
   // Do the stuff every next millisecond at most 
@@ -176,7 +175,9 @@ void loop() {
       tmp = keys_new[i];
       for (j = 0; tmp > 0; j++) {
         if (tmp & 1u) {
-          on_key((i << 5) + j);
+          bit = (i << 5) + j;
+          down = get_bit(keys_now, bit);
+          on_key(bit, down);
         }
         tmp >>= 1;
       }
