@@ -115,16 +115,40 @@ void debounce(uint32_t *debounced) {
 void on_key(unsigned ix) {
   static unsigned code, down;
   static const unsigned *layout = layout_0;
+  static unsigned shift_state = 0; 
 
   code = layout[ix];
   down = get_bit(keys_now, ix);
 
   switch (code) {
-    case KEY_LEVEL_1:
+    case KEY_LEVEL_1: {
       layout = down ? layout_1 : layout_0;
       break;
-    default:
+    }
+    case KEY_RIGHT_BRACE: {
+      switch (shift_state) {
+        case 0:
+          shift_state = 1;
+          break;
+        case 1:
+          shift_state = 0;
+          Keyboard.press(code);
+          Keyboard.release(code);
+          break;
+        case 2:
+          shift_state = 0;
+          Keyboard.release(KEY_RIGHT_SHIFT);
+          break;
+      }
+      break;
+    }
+    default: {
+      if (1 == shift_state) {
+        shift_state = 2;
+        Keyboard.press(KEY_RIGHT_SHIFT);
+      }
       down ? Keyboard.press(code) : Keyboard.release(code);
+    }
   }
 }
 
@@ -167,24 +191,7 @@ void loop() {
       down = get_bit(keys_now, i);
 
       switch (code) {
-        case KEY_RIGHT_BRACE: {
-          switch (keys_hold) {
-            case 0:
-              keys_hold = 1;
-              break;
-            case 1:
-              keys_hold = 0;
-              Keyboard.press(code);
-              Keyboard.release(code);
-              break;
-            case 2:
-              keys_hold = 0;
-              Keyboard.release(KEY_RIGHT_SHIFT);
-              break;
-          }
-          break;
-        }
-        // Example of the hold-key behaviour
+       // Example of the hold-key behaviour
 /*        case KEY_SPACE:
         {
           if (!down) {
