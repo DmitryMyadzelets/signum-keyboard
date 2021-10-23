@@ -154,7 +154,6 @@ void on_key(unsigned ix) {
 
 void loop() {
   static unsigned i, j, t0, t;
-  static unsigned keys_hold = 0;
   static uint32_t tmp;
 
   // Do the stuff every next millisecond at most 
@@ -191,6 +190,7 @@ void loop() {
       down = get_bit(keys_now, i);
 
       switch (code) {
+*/
        // Example of the hold-key behaviour
 /*        case KEY_SPACE:
         {
