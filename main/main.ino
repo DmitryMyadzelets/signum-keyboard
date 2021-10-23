@@ -112,6 +112,7 @@ void debounce(uint32_t *debounced) {
 }
 
 // On key event
+// Send new keyboard events to the USB host
 void on_key(unsigned ix) {
   static unsigned code, down;
   static const unsigned *layout = layout_0;
@@ -181,40 +182,4 @@ void loop() {
       }
     }
   }
-
-  // Send new keyboard events to the USB host
-  /*
-  for (i = 0; i < KEYS; i++) {
-    if (get_bit(keys_new, i)) {
-      code = layout[i];
-      down = get_bit(keys_now, i);
-
-      switch (code) {
-*/
-       // Example of the hold-key behaviour
-/*        case KEY_SPACE:
-        {
-          if (!down) {
-            Keyboard.press(code);
-            Keyboard.release(code);
-          }
-          break;
-        } */
-/*
-        case KEY_LEVEL_1: {
-          layout = down ? layout_1 : layout_0;
-          break;
-        }
-        default:
-        {
-          if (1 == keys_hold) {
-            keys_hold = 2;
-            Keyboard.press(KEY_RIGHT_SHIFT);
-          }
-          down ? Keyboard.press(code) : Keyboard.release(code);
-        }
-      }
-    }
-  }
-  */
 }
