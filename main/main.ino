@@ -150,14 +150,14 @@ void loop() {
   for (i = 0; i < keys_uint32; i++) {
     if (keys_new[i]) { 
       tmp = keys_new[i];
-      for (j = 0; tmp > 0; j++, tmp >>= 1) {
+      for (j = 0; tmp > 0; j++) {
         if (tmp & 1u) {
           on_key((i << 5) + j);
         }
+        tmp >>= 1;
       }
     }
   }
-  return;
 
   // Send new keyboard events to the USB host
   /*
