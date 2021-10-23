@@ -96,7 +96,7 @@ void scan(uint32_t *bits) {
       ix = r * COLS + c;
       set_bit(bits, ix, !v);
     }
-    
+
     pinMode(rowPins[r], INPUT_PULLUP);
   }
 }
@@ -111,10 +111,27 @@ void debounce(uint32_t *debounced) {
   }
 }
 
-void loop() {
-  static unsigned i, t0, t, code, down;
+// On key event
+void on_key(unsigned ix) {
+  static unsigned code, down;
   static const unsigned *layout = layout_0;
+
+  code = layout[ix];
+  down = get_bit(keys_now, ix);
+
+  switch (code) {
+    case KEY_LEVEL_1:
+      layout = down ? layout_1 : layout_0;
+      break;
+    default:
+      down ? Keyboard.press(code) : Keyboard.release(code);
+  }
+}
+
+void loop() {
+  static unsigned i, j, t0, t;
   static unsigned keys_hold = 0;
+  static uint32_t tmp;
 
   // Do the stuff every next millisecond at most 
   t = millis();
@@ -123,13 +140,27 @@ void loop() {
 
   scan(keys_now);
   debounce(keys_now);
-  
+ 
   for (i = 0; i < keys_uint32; i++) {
     keys_new[i] = keys_old[i] ^ keys_now[i]; // keys just pressed or released
     keys_old[i] = keys_now[i]; // update the olds
   }
 
+  // Get just pressed keys 
+  for (i = 0; i < keys_uint32; i++) {
+    if (keys_new[i]) { 
+      tmp = keys_new[i];
+      for (j = 0; tmp > 0; j++, tmp >>= 1) {
+        if (tmp & 1u) {
+          on_key((i << 5) + j);
+        }
+      }
+    }
+  }
+  return;
+
   // Send new keyboard events to the USB host
+  /*
   for (i = 0; i < KEYS; i++) {
     if (get_bit(keys_new, i)) {
       code = layout[i];
@@ -162,6 +193,7 @@ void loop() {
           }
           break;
         } */
+/*
         case KEY_LEVEL_1: {
           layout = down ? layout_1 : layout_0;
           break;
@@ -177,4 +209,5 @@ void loop() {
       }
     }
   }
+  */
 }
