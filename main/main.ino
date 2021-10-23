@@ -84,7 +84,7 @@ unsigned get_bit(uint32_t *arr, unsigned bit) {
 }
 
 // Scan all keys
-void scan() {
+void scan(uint32_t *bits) {
   static unsigned r, c, v, ix;
 
   for (r = 0; r < ROWS; r++) {
@@ -94,7 +94,7 @@ void scan() {
     for (c = 0; c < COLS; c++) {
       v = digitalRead(colPins[c]);
       ix = r * COLS + c;
-      set_bit(keys_now, ix, !v);
+      set_bit(bits, ix, !v);
     }
     
     pinMode(rowPins[r], INPUT_PULLUP);
@@ -102,12 +102,12 @@ void scan() {
 }
 
 // Debounce all keys
-void debounce() {
+void debounce(uint32_t *debounced) {
   static unsigned i;
 
   for (i = 0; i < KEYS; i++) {
-      (keys_states[i] <<= 1) |= get_bit(keys_now, i);
-      set_bit(keys_now, i, keys_states[i]);
+      (keys_states[i] <<= 1) |= get_bit(debounced, i);
+      set_bit(debounced, i, keys_states[i]);
   }
 }
 
@@ -121,8 +121,8 @@ void loop() {
   if (t == t0) { return; }
   t0 = t;
 
-  scan();
-  debounce();
+  scan(keys_now);
+  debounce(keys_now);
   
   for (i = 0; i < keys_uint32; i++) {
     keys_new[i] = keys_old[i] ^ keys_now[i]; // keys just pressed or released
