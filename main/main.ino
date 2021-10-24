@@ -26,7 +26,8 @@ uint8_t keys_states[KEYS]; // Keys' states history for debouncing
 
 //-----------------------------------------------------------------------------
 // Layouts
-#define KEY_LEVEL_1 256u
+#define KEY_LEVEL_NEXT 256u
+#define LAYOUTS 2
 
 const unsigned layout_0[KEYS] = {
   KEY_TILDE, KEY_Q, KEY_W, KEY_E, KEY_R, KEY_T, 
@@ -38,7 +39,7 @@ const unsigned layout_0[KEYS] = {
   MODIFIERKEY_SHIFT, KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, 
   KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE/*MODIFIERKEY_RIGHT_SHIFT*/,
   //
-  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_1, KEY_BACKSPACE, KEY_ESC, 
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_NEXT, KEY_BACKSPACE, KEY_ESC, 
   KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
 };
 
@@ -52,8 +53,18 @@ const unsigned layout_1[KEYS] = {
   MODIFIERKEY_SHIFT, 0, 0, KEY_CAPS_LOCK, 0, 0,
   0, 0, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE,
   //
-  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_1, KEY_BACKSPACE, KEY_ESC, 
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_NEXT, KEY_BACKSPACE, KEY_ESC, 
   KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
+};
+
+typedef struct layout_t {
+  uint32_t bits[keys_uint32];
+  const unsigned * const codes;
+} layout_t;
+
+layout_t layouts [LAYOUTS] = {
+  { { 0 }, layout_0 },
+  { { 0 }, layout_1 }
 };
 
 //-----------------------------------------------------------------------------
@@ -115,14 +126,16 @@ void debounce(uint32_t *debounced) {
 // Send new keyboard events to the USB host
 void on_key(unsigned bit, unsigned down) {
   static unsigned code;
-  static const unsigned *layout = layout_0;
+  static unsigned layout_ix = 0;
+  static const unsigned *codes = layouts[layout_ix].codes;
   static unsigned shift_state = 0; 
 
-  code = layout[bit];
+  code = codes[bit];
 
   switch (code) {
-    case KEY_LEVEL_1: {
-      layout = down ? layout_1 : layout_0;
+    case KEY_LEVEL_NEXT: {
+      layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
+      codes = layouts[layout_ix].codes;
       break;
     }
     case KEY_RIGHT_BRACE: {
