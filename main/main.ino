@@ -27,7 +27,7 @@ uint8_t keys_states[KEYS]; // Keys' states history for debouncing
 //-----------------------------------------------------------------------------
 // Layouts
 #define KEY_LEVEL_NEXT 256u
-#define LAYOUTS 2
+#define LAYOUTS 3
 
 const unsigned layout_0[KEYS] = {
   KEY_TILDE, KEY_Q, KEY_W, KEY_E, KEY_R, KEY_T, 
@@ -57,6 +57,20 @@ const unsigned layout_1[KEYS] = {
   KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
 };
 
+const unsigned layout_2[KEYS] = {
+  KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6,
+  KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12,
+  //
+  0, 0, 0, 0, 0, 0,
+  KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, 0, KEY_PRINTSCREEN,
+  //
+  MODIFIERKEY_SHIFT, 0, 0, KEY_CAPS_LOCK, 0, 0,
+  0, 0, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE,
+  //
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_NEXT, KEY_BACKSPACE, KEY_ESC, 
+  KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
+};
+
 typedef struct layout_t {
   uint32_t bits[keys_uint32];
   const unsigned * const codes;
@@ -64,7 +78,8 @@ typedef struct layout_t {
 
 layout_t layouts [LAYOUTS] = {
   { { 0 }, layout_0 },
-  { { 0 }, layout_1 }
+  { { 0 }, layout_1 },
+  { { 0 }, layout_2 }
 };
 
 //-----------------------------------------------------------------------------
@@ -129,6 +144,7 @@ void on_key(unsigned bit, unsigned down) {
   static unsigned code;
   static unsigned layout_ix = 0;
   static unsigned shift_state = 0; 
+  static unsigned level_state = 0;
 
   // Assume the key code is from the current layout
   code = layouts[layout_ix].codes[bit]; 
@@ -148,8 +164,26 @@ void on_key(unsigned bit, unsigned down) {
 
   switch (code) {
     case KEY_LEVEL_NEXT: {
-      // Switch to a next layout if it exists, go to the first otherwise
-      layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
+      switch (level_state) {
+        case 0:
+          // key down is assumed
+          level_state = 1;
+          // Switch to a next layout if it exists, go to the first otherwise
+          layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
+          break;
+        case 1: // Wait for Level up or other key 
+          level_state = 3;
+          break;
+        case 2: // Wait Level up key
+          layout_ix = layout_ix > 0 ? layout_ix - 1 : 0;
+          level_state = 0;
+          break;
+        case 3: // Wait for Level down or ESC key
+          // Switch to a next layout if it exists, go to the first otherwise
+          layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
+          level_state = 1;
+          break;
+      }
       break;
     }
     case KEY_RIGHT_BRACE: {
@@ -170,6 +204,17 @@ void on_key(unsigned bit, unsigned down) {
       break;
     }
     default: {
+      switch (level_state) {
+        case 1:
+          level_state = 2;
+          break;
+        case 3:
+          if (KEY_ESC == code) {
+            level_state = 0;
+            layout_ix = 0;
+          }
+          break;
+      }
       if (1 == shift_state) {
         shift_state = 2;
         Keyboard.press(KEY_RIGHT_SHIFT);
