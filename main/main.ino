@@ -122,8 +122,9 @@ void debounce(uint32_t *debounced) {
   }
 }
 
-// On key event
-// Send new keyboard events to the USB host
+// Process key events
+// Decide on which layer the event is occured and
+// send keyboard events to an USB host
 void on_key(unsigned bit, unsigned down) {
   static unsigned code;
   static unsigned layout_ix = 0;
@@ -147,7 +148,7 @@ void on_key(unsigned bit, unsigned down) {
 
   switch (code) {
     case KEY_LEVEL_NEXT: {
-      // Switch to a next layout, if exists, go to the first otherwise
+      // Switch to a next layout if it exists, go to the first otherwise
       layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
       break;
     }
