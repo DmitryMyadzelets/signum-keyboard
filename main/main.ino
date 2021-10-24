@@ -127,15 +127,28 @@ void debounce(uint32_t *debounced) {
 void on_key(unsigned bit, unsigned down) {
   static unsigned code;
   static unsigned layout_ix = 0;
-  static const unsigned *codes = layouts[layout_ix].codes;
   static unsigned shift_state = 0; 
 
-  code = codes[bit];
+  // Assume the key code is from the current layout
+  code = layouts[layout_ix].codes[bit]; 
+
+  if (down) {
+    // Remember the layout the key
+    set_bit(layouts[layout_ix].bits, bit, 1); 
+  } else {
+    // Get the code from the layout the key was pressed at
+    for (unsigned i = 0; i < LAYOUTS; i++) {
+      if (get_bit(layouts[i].bits, bit)) {
+        set_bit(layouts[i].bits, bit, 0);
+        code = layouts[i].codes[bit];
+      }
+    }
+  }
 
   switch (code) {
     case KEY_LEVEL_NEXT: {
+      // Switch to a next layout, if exists, go to the first otherwise
       layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
-      codes = layouts[layout_ix].codes;
       break;
     }
     case KEY_RIGHT_BRACE: {
