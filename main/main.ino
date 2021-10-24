@@ -83,7 +83,7 @@ unsigned get_bit(uint32_t *arr, unsigned bit) {
   return arr[ix] >> bit & 1u;
 }
 
-// Scan all keys
+// Scan all phisical keys' inputs
 void scan(uint32_t *bits) {
   static unsigned r, c, v, ix;
 
@@ -161,15 +161,16 @@ void loop() {
   if (t == t0) { return; }
   t0 = t;
 
-  scan(keys_now);
+  scan(keys_now); // Discrete inputs to arrays
   debounce(keys_now);
  
+  // Get bits of the keys changed their state after the previous scan
   for (i = 0; i < keys_uint32; i++) {
     keys_new[i] = keys_old[i] ^ keys_now[i]; // keys just pressed or released
     keys_old[i] = keys_now[i]; // update the olds
   }
 
-  // Get just pressed keys 
+  // Check if any of the keys has changed its state and call the handle
   for (i = 0; i < keys_uint32; i++) {
     if (keys_new[i]) { 
       tmp = keys_new[i];
@@ -177,7 +178,7 @@ void loop() {
         if (tmp & 1u) {
           bit = (i << 5) + j;
           down = get_bit(keys_now, bit);
-          on_key(bit, down);
+          on_key(bit, down); // Handle the change of a key
         }
         tmp >>= 1;
       }
