@@ -144,7 +144,6 @@ void on_key(unsigned bit, unsigned down) {
   static unsigned code;
   static unsigned layout_ix = 0;
   static unsigned shift_state = 0; 
-  static unsigned level_state = 0;
 
   // Assume the key code is from the current layout
   code = layouts[layout_ix].codes[bit]; 
@@ -164,26 +163,7 @@ void on_key(unsigned bit, unsigned down) {
 
   switch (code) {
     case KEY_LEVEL_NEXT: {
-      switch (level_state) {
-        case 0:
-          // key down is assumed
-          level_state = 1;
-          // Switch to a next layout if it exists, go to the first otherwise
-          layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
-          break;
-        case 1: // Wait for Level up or other key 
-          level_state = 3;
-          break;
-        case 2: // Wait Level up key
-          layout_ix = layout_ix > 0 ? layout_ix - 1 : 0;
-          level_state = 0;
-          break;
-        case 3: // Wait for Level down or ESC key
-          // Switch to a next layout if it exists, go to the first otherwise
-          layout_ix = layout_ix < LAYOUTS - 1 ? layout_ix + 1 : 0;
-          level_state = 1;
-          break;
-      }
+      layout_ix = down ? 1 : 0;
       break;
     }
     case KEY_RIGHT_BRACE: {
@@ -204,17 +184,6 @@ void on_key(unsigned bit, unsigned down) {
       break;
     }
     default: {
-      switch (level_state) {
-        case 1:
-          level_state = 2;
-          break;
-        case 3:
-          if (KEY_ESC == code) {
-            level_state = 0;
-            layout_ix = 0;
-          }
-          break;
-      }
       if (1 == shift_state) {
         shift_state = 2;
         Keyboard.press(KEY_RIGHT_SHIFT);
