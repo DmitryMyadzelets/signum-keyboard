@@ -11,6 +11,10 @@
 #define ROWS 4
 #define KEYS (COLS * ROWS)
 
+#define LED 13 // LED pin
+#define LEDON digitalWrite(LED, HIGH);
+#define LEDOF digitalWrite(LED, LOW);
+
 // The pins of Teensy 3.2 used for the keyboard's matrix
 uint8_t colPins[COLS] = { 11, 9, 6, 10, 7, 18, 20, 17, 16, 15, 8, 14 };
 uint8_t rowPins[ROWS] = { 2, 5, 19, 12 };
@@ -26,7 +30,8 @@ uint8_t keys_states[KEYS]; // Keys' states history for debouncing
 
 //-----------------------------------------------------------------------------
 // Layouts
-#define KEY_LEVEL_NEXT 256u
+#define KEY_LAYOUT_2 256u
+#define KEY_LAYOUT_1 257u
 #define LAYOUTS 3
 
 const unsigned layout_0[KEYS] = {
@@ -39,7 +44,7 @@ const unsigned layout_0[KEYS] = {
   MODIFIERKEY_SHIFT, KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, 
   KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE/*MODIFIERKEY_RIGHT_SHIFT*/,
   //
-  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_NEXT, KEY_BACKSPACE, KEY_ESC, 
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LAYOUT_1, KEY_BACKSPACE, KEY_ESC, 
   KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
 };
 
@@ -53,8 +58,8 @@ const unsigned layout_1[KEYS] = {
   MODIFIERKEY_SHIFT, 0, 0, KEY_CAPS_LOCK, 0, 0,
   0, 0, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE,
   //
-  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_NEXT, KEY_BACKSPACE, KEY_ESC, 
-  KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LAYOUT_1, KEY_BACKSPACE, KEY_ESC, 
+  KEY_ENTER, KEY_SPACE, KEY_LAYOUT_2, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
 };
 
 const unsigned layout_2[KEYS] = {
@@ -67,8 +72,8 @@ const unsigned layout_2[KEYS] = {
   MODIFIERKEY_SHIFT, 0, 0, KEY_CAPS_LOCK, 0, 0,
   0, 0, KEY_COMMA, KEY_PERIOD, KEY_SLASH, KEY_RIGHT_BRACE,
   //
-  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LEVEL_NEXT, KEY_BACKSPACE, KEY_ESC, 
-  KEY_ENTER, KEY_SPACE, KEY_DELETE, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
+  MODIFIERKEY_CTRL, MODIFIERKEY_GUI, MODIFIERKEY_ALT, KEY_LAYOUT_1, KEY_BACKSPACE, KEY_ESC, 
+  KEY_ENTER, KEY_SPACE, KEY_LAYOUT_2, 0, KEY_BACKSLASH, MODIFIERKEY_RIGHT_CTRL
 };
 
 typedef struct layout_t {
@@ -87,6 +92,7 @@ layout_t layouts [LAYOUTS] = {
 void setup() {
   for (int c = 0; c < COLS; c++) { pinMode(colPins[c], INPUT_PULLUP); }
   for (int r = 0; r < ROWS; r++) { pinMode(rowPins[r], INPUT_PULLUP); }
+  pinMode(LED, OUTPUT);
 }
 
 // Set the bit value in an array
@@ -144,6 +150,7 @@ void on_key(unsigned bit, unsigned down) {
   static unsigned code;
   static unsigned layout_ix = 0;
   static unsigned shift_state = 0; 
+  static unsigned layout_state = 0;
 
   // Assume the key code is from the current layout
   code = layouts[layout_ix].codes[bit]; 
@@ -162,8 +169,37 @@ void on_key(unsigned bit, unsigned down) {
   }
 
   switch (code) {
-    case KEY_LEVEL_NEXT: {
-      layout_ix = down ? 1 : 0;
+    case KEY_LAYOUT_1: {
+      switch (layout_state) {
+        case 0: // down
+          layout_state = 1;
+          layout_ix = 1;
+          break;
+        case 1: // up
+          layout_state = 0;
+          layout_ix = 0;
+          break;
+        case 2: // up
+          layout_state = 3;
+          break;
+      }
+      break;
+    }
+    case KEY_LAYOUT_2: {
+      switch (layout_state) {
+        case 1: // down
+          layout_state = 2;
+          layout_ix = 2;
+          break;
+        case 2: // up
+          layout_state = 1;
+          layout_ix = 1;
+          break;
+        case 3: // up
+          layout_state = 0;
+          layout_ix = 0;
+          break;
+      }
       break;
     }
     case KEY_RIGHT_BRACE: {
