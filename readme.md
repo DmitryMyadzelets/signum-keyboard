@@ -3,7 +3,7 @@
 # Signum keyboard
 My ergonomic keyboard based on [Troy Fletcher's](http://troyfletcher.net) board.
 
-The keyboard uses [Teency USB development board](https://www.pjrc.com/teensy/).
+The keyboard uses [Teensy USB development board](https://www.pjrc.com/teensy/).
 
 The layouts of my keyboard are at [keyboard-layout-editor.com](http://www.keyboard-layout-editor.com/#/gists/1db4e9d50eaa5da4385a4fb53a21c67d).
 
@@ -47,7 +47,7 @@ row 1     B3    5
 row 2     F6    19
 row 3     C7    12
 ```
-Note: I use Teency 3.2
+Note: I use Teensy 3.2
 
 ## Indexes of the keys
 ```
