@@ -8,11 +8,13 @@ The keyboard uses [Teensy USB development board](https://www.pjrc.com/teensy/).
 The layouts of my keyboard are at [keyboard-layout-editor.com](http://www.keyboard-layout-editor.com/#/gists/1db4e9d50eaa5da4385a4fb53a21c67d).
 
 ## Development Setup
-1. Install [Arduino IDE](//www.arduino.cc)
+1. Download and Unpack [Arduino IDE](//www.arduino.cc). Don't use distro's
+   package.
 2. Install [Teensyduino add-on](https://www.pjrc.com/teensy/teensyduino.html) for Arduino IDE
 3. Select in the Arduino IDE "Tools > USB Type : Keyboard"
 
 Note: On Rock64 I used packages built for `arrch64` architecture.
+Check the About of Arduino IDE, you must see a version Teensyduino there.
 
 ## Resources
 * [Signum 3 configuration](http://troyfletcher.net/config.html)
