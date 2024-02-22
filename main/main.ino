@@ -26,7 +26,7 @@ const unsigned keys_uint32 = ((KEYS - 1) >> 5) + 1;
 uint32_t keys_old[keys_uint32]; // Keys' states in the previous scan
 uint32_t keys_now[keys_uint32]; // Keys' states in the current scan
 uint32_t keys_new[keys_uint32]; // Keys which changed it state
-uint8_t keys_states[KEYS]; // Keys' states history for debouncing
+uint32_t keys_states[KEYS]; // Keys' states history for debouncing
 
 //-----------------------------------------------------------------------------
 // Layouts
@@ -233,7 +233,7 @@ void loop() {
   static unsigned i, j, t0, t, bit, down;
   static uint32_t tmp;
 
-  // Do the stuff every next millisecond at most 
+  // Do the stuff every next millisecond at most
   t = millis();
   if (t == t0) { return; }
   t0 = t;
