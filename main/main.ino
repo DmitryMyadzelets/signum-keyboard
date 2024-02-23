@@ -26,7 +26,7 @@ const unsigned keys_uint32 = ((KEYS - 1) >> 5) + 1;
 uint32_t keys_old[keys_uint32]; // Keys' states in the previous scan
 uint32_t keys_now[keys_uint32]; // Keys' states in the current scan
 uint32_t keys_new[keys_uint32]; // Keys which changed it state
-uint16_t keys_states[KEYS];     // Keys' states history for debouncing
+uint8_t  keys_states[KEYS];     // Keys' states history for debouncing
 
 //-----------------------------------------------------------------------------
 // Layouts
@@ -237,7 +237,7 @@ void loop() {
 
   // (not) Do the stuff every next millisecond at most
   t = millis();
-  if (t - t0 < 5) { return; }
+  if (t - t0 < 2) { return; } // 500 Hz scan rate
   t0 = t;
 
   scan(keys_now); // Discrete inputs to arrays
