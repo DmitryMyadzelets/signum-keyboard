@@ -26,7 +26,7 @@ const unsigned keys_uint32 = ((KEYS - 1) >> 5) + 1;
 uint32_t keys_old[keys_uint32]; // Keys' states in the previous scan
 uint32_t keys_now[keys_uint32]; // Keys' states in the current scan
 uint32_t keys_new[keys_uint32]; // Keys which changed it state
-uint32_t keys_states[KEYS]; // Keys' states history for debouncing
+uint16_t keys_states[KEYS];     // Keys' states history for debouncing
 
 //-----------------------------------------------------------------------------
 // Layouts
@@ -139,7 +139,9 @@ void debounce(uint32_t *debounced) {
 
   for (i = 0; i < KEYS; i++) {
       (keys_states[i] <<= 1) |= get_bit(debounced, i);
-      set_bit(debounced, i, keys_states[i]);
+      // The below is not a proper debouncing since we interpret
+      // any noise as a 1, and only all 0 as 0
+      set_bit(debounced, i, keys_states[i] > 0);
   }
 }
 
@@ -233,9 +235,9 @@ void loop() {
   static unsigned i, j, t0, t, bit, down;
   static uint32_t tmp;
 
-  // Do the stuff every next millisecond at most
+  // (not) Do the stuff every next millisecond at most
   t = millis();
-  if (t == t0) { return; }
+  if (t - t0 < 5) { return; }
   t0 = t;
 
   scan(keys_now); // Discrete inputs to arrays
