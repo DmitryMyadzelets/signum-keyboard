@@ -26,6 +26,7 @@ Check the About of Arduino IDE, you must see a version Teensyduino there.
 * [Debouncing](https://www.embedded.com/electronics-blogs/break-points/4024981/My-favorite-software-debouncers)
 * [Debounce in C](https://github.com/tcleg/Button_Debouncer)
 * [My collection of layouts](https://gist.github.com/DmitryMyadzelets/c22403c905512ba3f0da4bed3c205506)
+* [Debouncing](https://geekhack.org/index.php?topic=42385.0)
 
 ## Teensy's pins used to scan the keys
 ```
