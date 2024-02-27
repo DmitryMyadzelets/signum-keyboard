@@ -206,6 +206,9 @@ void on_key(unsigned bit, unsigned down) {
         case 2: // up
           layout_state = 3;
           break;
+        case 3: // down
+          layout_state = 2;
+          break;
       }
       break;
     }
