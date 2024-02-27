@@ -23,10 +23,8 @@ uint8_t rowPins[ROWS] = { 2, 5, 19, 12 };
 const unsigned keys_uint32 = ((KEYS - 1) >> 5) + 1;
 
 // Arrays to work with keys. For bit arrays the logic is positive.
-uint32_t keys_old[keys_uint32]; // Keys' states in the previous scan
-uint32_t keys_now[keys_uint32]; // Keys' states in the current scan
-uint32_t keys_new[keys_uint32]; // Keys which changed it state
-uint8_t  keys_states[KEYS];     // Keys' states history for debouncing
+uint32_t keys_states[keys_uint32]; // Keys' states in the current scan
+uint16_t keys_history[KEYS];       // Keys' states history for debouncing
 
 //-----------------------------------------------------------------------------
 // Layouts
@@ -133,18 +131,6 @@ void scan(uint32_t *bits) {
   }
 }
 
-// Debounce all keys
-void debounce(uint32_t *debounced) {
-  static unsigned i;
-
-  for (i = 0; i < KEYS; i++) {
-      (keys_states[i] <<= 1) |= get_bit(debounced, i);
-      // The below is not a proper debouncing since we interpret
-      // any noise as a 1, and only all 0 as 0
-      set_bit(debounced, i, keys_states[i] > 0);
-  }
-}
-
 // Process key events
 // Decide on which layer the event is occured and
 // send keyboard events to an USB host
@@ -232,35 +218,23 @@ void on_key(unsigned bit, unsigned down) {
 }
 
 void loop() {
-  static unsigned i, j, t0, t, bit, down;
-  static uint32_t tmp;
+  static unsigned i, t0, t;
 
-  // (not) Do the stuff every next millisecond at most
+  // (Don't) Do the stuff every next millisecond at most
   t = millis();
-  if (t - t0 < 2) { return; } // 500 Hz scan rate
+  // if (t - t0 < 3) { return; } // 333 Hz scan rate
+  if (t - t0 < 1) { return; } // 1000 Hz scan rate
   t0 = t;
 
-  scan(keys_now); // Discrete inputs to arrays
-  debounce(keys_now);
- 
-  // Get bits of the keys changed their state after the previous scan
-  for (i = 0; i < keys_uint32; i++) {
-    keys_new[i] = keys_old[i] ^ keys_now[i]; // keys just pressed or released
-    keys_old[i] = keys_now[i]; // update the olds
-  }
+  scan(keys_states); // Discrete inputs to arrays
 
-  // Check if any of the keys has changed its state and call the handle
-  for (i = 0; i < keys_uint32; i++) {
-    if (keys_new[i]) { 
-      tmp = keys_new[i];
-      for (j = 0; tmp > 0; j++) {
-        if (tmp & 1u) {
-          bit = (i << 5) + j;
-          down = get_bit(keys_now, bit);
-          on_key(bit, down); // Handle the change of a key
-        }
-        tmp >>= 1;
+  // Debounce and trigger keys' events if any
+  for (i = 0; i < KEYS; i++) {
+      (keys_history[i] <<= 1) |= get_bit(keys_states, i);
+      switch (keys_history[i]
+           & 0b11111111111) {
+        case 0b01111111111: on_key(i, 1); break;
+        case 0b10000000000: on_key(i, 0); break;
       }
-    }
   }
 }
