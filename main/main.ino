@@ -169,7 +169,7 @@ inline bool process_b(unsigned code, unsigned down) {
 // send keyboard events to an USB host
 void on_key(unsigned bit, unsigned down) {
   static unsigned layout_ix = 0; // Index of current layout
-  static unsigned layout_state = 0;
+  static unsigned state = 0;
 
   unsigned code = 0; // Valid key codes begin from 1, so 0 isn't valid
   /* 
@@ -192,38 +192,39 @@ void on_key(unsigned bit, unsigned down) {
 
   if (0 == code) { return; }
 
+  // State maching for switching the layouts
   switch (code) {
     case KEY_LAYOUT_1: {
-      switch (layout_state) {
+      switch (state) {
         case 0: // down
-          layout_state = 1;
+          state = 1;
           layout_ix = 1;
           break;
         case 1: // up
-          layout_state = 0;
+          state = 0;
           layout_ix = 0;
           break;
         case 2: // up
-          layout_state = 3;
+          state = 3;
           break;
         case 3: // down
-          layout_state = 2;
+          state = 2;
           break;
       }
       break;
     }
     case KEY_LAYOUT_2: {
-      switch (layout_state) {
+      switch (state) {
         case 1: // down
-          layout_state = 2;
+          state = 2;
           layout_ix = 2;
           break;
         case 2: // up
-          layout_state = 1;
+          state = 1;
           layout_ix = 1;
           break;
         case 3: // up
-          layout_state = 0;
+          state = 0;
           layout_ix = 0;
           break;
       }
