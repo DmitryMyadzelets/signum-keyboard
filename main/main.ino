@@ -115,21 +115,68 @@ void scan(uint32_t *bits) {
   }
 }
 
+/*
+ * Tht KEY_RIGHT_BRACE acts as Shift when hold and other key is pressed.
+ * It implies that the key itself can't be hold.
+ * Returns false if the key shouldn't be processed after, true otherwise.
+ */ 
+inline bool process_a(unsigned code, unsigned down) {
+  static unsigned state = 0;
+
+  switch (state) {
+    case 0: // Wait for the magic key
+      switch (code) {
+        case KEY_RIGHT_BRACE:
+          state = 1;
+          break;
+        default: return true;
+      }
+      break;
+    case 1: // Wait for the magic key again, or another key
+      switch (code) {
+        case KEY_RIGHT_BRACE:
+          Keyboard.press(code);
+          Keyboard.release(code);
+          state = 0;
+          break;
+        default:
+          Keyboard.press(KEY_RIGHT_SHIFT);
+          state = 2;
+          return true;
+      }
+      break;
+    case 2: // Wait for the magic key release
+      switch (code) {
+        case KEY_RIGHT_BRACE:
+          Keyboard.release(KEY_RIGHT_SHIFT);
+          state = 0;
+        default: return true;
+      }
+  }
+  return false;
+}
+
+inline bool process_b(unsigned code, unsigned down) {
+  down ? Keyboard.press(code) : Keyboard.release(code);
+  return false;
+}
+
 // Process key events
 // Decide on which layer the event is occured and
 // send keyboard events to an USB host
 void on_key(unsigned bit, unsigned down) {
-  static unsigned code;
-  static unsigned layout_ix = 0;
-  static unsigned shift_state = 0; 
+  static unsigned layout_ix = 0; // Index of current layout
   static unsigned layout_state = 0;
 
-  // Assume the key code is from the current layout
-  code = layouts[layout_ix].codes[bit]; 
-
+  unsigned code = 0; // Valid key codes begin from 1, so 0 isn't valid
+  /* 
+    We can press a key on one layout, and release on another.
+    When released we have to check if the key was pressed elsewere
+  */
   if (down) {
-    // Remember the layout the key
+    // Remember the key pressed at the current layout
     set_bit(layouts[layout_ix].bits, bit, 1); 
+    code = layouts[layout_ix].codes[bit]; 
   } else {
     // Get the code from the layout the key was pressed at
     for (unsigned i = 0; i < LAYOUTS; i++) {
@@ -139,6 +186,8 @@ void on_key(unsigned bit, unsigned down) {
       }
     }
   }
+
+  if (0 == code) { return; }
 
   switch (code) {
     case KEY_LAYOUT_1: {
@@ -174,29 +223,8 @@ void on_key(unsigned bit, unsigned down) {
       }
       break;
     }
-    case KEY_RIGHT_BRACE: {
-      switch (shift_state) {
-        case 0:
-          shift_state = 1;
-          break;
-        case 1:
-          shift_state = 0;
-          Keyboard.press(code);
-          Keyboard.release(code);
-          break;
-        case 2:
-          shift_state = 0;
-          Keyboard.release(KEY_RIGHT_SHIFT);
-          break;
-      }
-      break;
-    }
     default: {
-      if (1 == shift_state) {
-        shift_state = 2;
-        Keyboard.press(KEY_RIGHT_SHIFT);
-      }
-      down ? Keyboard.press(code) : Keyboard.release(code);
+      process_a(code, down) && process_b(code, down);
     }
   }
 }
