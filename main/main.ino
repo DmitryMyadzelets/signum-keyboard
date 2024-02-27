@@ -156,6 +156,9 @@ inline bool process_a(unsigned code, unsigned down) {
   return false;
 }
 
+/*
+ * Default handler for key codes
+ */
 inline bool process_b(unsigned code, unsigned down) {
   down ? Keyboard.press(code) : Keyboard.release(code);
   return false;
