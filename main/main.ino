@@ -197,6 +197,7 @@ void on_key(unsigned bit, unsigned down) {
     case KEY_LAYOUT_1: {
       switch (ost = state) {
         case 0: // down
+          if (!down) { break; }
           state = 1;
           layout_ix = 1;
           break;
