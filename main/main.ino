@@ -169,7 +169,7 @@ inline bool process_b(unsigned code, unsigned down) {
 // send keyboard events to an USB host
 void on_key(unsigned bit, unsigned down) {
   static unsigned layout_ix = 0; // Index of current layout
-  static unsigned state = 0;
+  static unsigned ost, state = 0;
 
   unsigned code = 0; // Valid key codes begin from 1, so 0 isn't valid
   /* 
@@ -195,7 +195,7 @@ void on_key(unsigned bit, unsigned down) {
   // State maching for switching the layouts
   switch (code) {
     case KEY_LAYOUT_1: {
-      switch (state) {
+      switch (ost = state) {
         case 0: // down
           state = 1;
           layout_ix = 1;
@@ -214,7 +214,7 @@ void on_key(unsigned bit, unsigned down) {
       break;
     }
     case KEY_LAYOUT_2: {
-      switch (state) {
+      switch (ost = state) {
         case 1: // down
           state = 2;
           layout_ix = 2;
@@ -232,6 +232,14 @@ void on_key(unsigned bit, unsigned down) {
     }
     default: {
       process_a(code, down) && process_b(code, down);
+    }
+  }
+
+  // Show/debug switching the layers
+  if (ost ^ state) {
+    switch (state) {
+      case 0: LEDOF; break;
+      default: LEDON;
     }
   }
 }
