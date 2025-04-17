@@ -97,7 +97,7 @@ unsigned get_bit(uint32_t *arr, unsigned bit) {
   return arr[ix] >> bit & 1u;
 }
 
-// Scan all phisical keys' inputs
+// Scan all physical keys' inputs
 void scan(uint32_t *bits) {
   static unsigned r, c, v, ix;
 
