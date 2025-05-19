@@ -109,3 +109,10 @@ The most used non-symbol keys are Space and Backspace, according to
 and [this](https://daniel.haxx.se/blog/2014/11/12/keyboard-key-frequency/)
 articles. These keys should be at default positions for thumbs. Another frequently used key is Shift. When it's pressed, the thumbs should remain at their default position.
 
+## Notes
+* The Arduino lib `Keyboard.h` has hardcoded limit of 6 keys pressed simultaneously
+  (plus modifiers). You may search for `N-Key Roll Over` (NKRO) solution to
+overcome this limit.
+* To ovecome MCU's limit of the digital inputs you may use an I/O expander with
+  a serial interface, like the `MCP23S17` and `MCP23S8` chips (16 and 8 I/O
+correspondingly). This way you can even replace the scanning approach with interrupts for every single key.
