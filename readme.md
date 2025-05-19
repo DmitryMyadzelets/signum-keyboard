@@ -11,7 +11,8 @@ The layouts of my keyboard are at [keyboard-layout-editor.com](http://www.keyboa
 1. Download and Unpack [Arduino IDE](//www.arduino.cc). Don't use distro's
    package.
 2. Install [Teensyduino add-on](https://www.pjrc.com/teensy/teensyduino.html) for Arduino IDE
-3. Select in the Arduino IDE "Tools > USB Type : Keyboard"
+3. Select in the Arduino IDE "Tools > USB Type : Keyboard". It adds a HID
+   library to the project.
 
 Note: On Rock64 I used packages built for `arrch64` architecture.
 Check the About of Arduino IDE, you must see a version Teensyduino there.
@@ -29,6 +30,7 @@ Check the About of Arduino IDE, you must see a version Teensyduino there.
 * [Debouncing](https://geekhack.org/index.php?topic=42385.0)
 
 ## Teensy's pins used to scan the keys
+The 12x4 I/O create a matrix for 48 keys.
 ```
 Teensy    2.0   3.2
 
