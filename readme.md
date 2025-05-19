@@ -119,4 +119,4 @@ overcome this limit.
   a serial interface, like the `MCP23S17` and `MCP23S8` chips (16 and 8 I/O
 correspondingly). This way you can even replace the scanning approach with interrupts for every single key.
 * After some research about ergonomics for the modiifers I found nothing
-  better then [this post](https://dygma.com/blogs/ergonomics/home-row-modifiers-vs-thumbkeys). The kewords: `home-raw modifiers`, `thumb-key modifiers`, if the article goes offline.
+  better then [this post](https://dygma.com/blogs/ergonomics/home-row-modifiers-vs-thumbkeys). The kewords: `home-raw modifiers`, `thumb-key modifiers`, if the article goes offline. See also [this page](https://github.com/callum-oakley/qmk_firmware/tree/master/users/callum) for a cool example of such approach.
