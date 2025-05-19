@@ -120,3 +120,36 @@ overcome this limit.
 correspondingly). This way you can even replace the scanning approach with interrupts for every single key.
 * After some research about ergonomics for the modiifers I found nothing
   better then [this post](https://dygma.com/blogs/ergonomics/home-row-modifiers-vs-thumbkeys). The kewords: `home-raw modifiers`, `thumb-key modifiers`, if the article goes offline. See also [this page](https://github.com/callum-oakley/qmk_firmware/tree/master/users/callum) for a cool example of such approach.
+
+## Rethinking the layouts
+The upper 3 rows of the keys:
+
+Main layout:
+```
+__`__ __q__ __w__ __e__ __r__ __t__   __y__ __u__ __i__ __o__ __p__ __p__
+_tab_ __a__ __s__ __d__ __f__ __g__   __h__ __j__ __k__ __l__ __;__ __'__ 
+shift __z__ __x__ __c__ __v__ __b__   __n__ __m__ __,__ __.__ __/__ __]__ 
+```
+2nd layout:
+```
+__1__ __2__ __3__ __4__ __5__ __6__   __7__ __8__ __9__ __0__ __-__ __=__
+_____ _____ _____ _____ _____ _____   left_ down_ _up__ right insrt _____ 
+shift __z__ __x__ caps_ _____ _____   _____ _____ __,__ __.__ __/__ __]__ 
+```
+3rd layout:
+```
+_f1__ _f2__ _f3__ _f4__ _f5__ _f6__   _f7__ _f8__ _f9__ _f10_ _f11_ _f12_
+_____ _____ _____ _____ _____ _____   home_ pg_dn pg_up _end_ _____ print 
+shift __z__ __x__ caps_ _____ _____   _____ _____ __,__ __.__ __/__ __]__ 
+```
+
+The lower row of the keys:
+
+Main layout:
+```
+ctrl_ _win_ _alt_ lay_1 _bsp_ _esc_   enter space _del_ _____ __\__ ctrl_
+```
+2nd and 3rd layouts:
+```
+ctrl_ _win_ _alt_ lay_1 _bsp_ _esc_   enter space lay_2 _____ __\__ ctrl_
+```
